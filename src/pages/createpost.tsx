@@ -6,8 +6,7 @@ import { api } from "~/utils/api";
 import { useState } from "react";
 import { useRouter } from "next/router";
 
-const Home: NextPage = () => {
-  // const hello = api.example.hello.useQuery({ text: "from tRPC" });
+const CreatePost: NextPage = () => {
   const router = useRouter();
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
@@ -31,13 +30,11 @@ const Home: NextPage = () => {
       </Head>
       <main className="flex flex-col items-center justify-center">
         <div className="container flex flex-col items-center justify-center gap-12 px-4 py-16 ">
-          <h1 className="text-2xl tracking-tight text-white">
-            Create post
-          </h1>
+          <h1 className="text-2xl tracking-tight text-white">Create post</h1>
           <div>
             <form onSubmit={submitData} className="flex flex-col">
               <input
-              className="my-2"
+                className="my-2"
                 autoFocus
                 onChange={(e) => setTitle(e.target.value)}
                 placeholder="Title"
@@ -52,14 +49,14 @@ const Home: NextPage = () => {
                 value={content}
               />
               <input
-              className="my-2 bg-white/10 px-10 py-3 font-semibold text-white no-underline transition hover:bg-white/20 cursor-pointer"
+                className="my-2 cursor-pointer bg-white/10 px-10 py-3 font-semibold text-white no-underline transition hover:bg-white/20"
                 disabled={!content || !title}
                 type="submit"
                 value="Create"
               />
               {/* <Link className="back" href="#" onClick={() => router.push("/")}>
-                or Cancel
-              </Link> */}
+                    or Cancel
+                  </Link> */}
             </form>
           </div>
         </div>
@@ -68,28 +65,4 @@ const Home: NextPage = () => {
   );
 };
 
-export default Home;
-
-// const AuthShowcase: React.FC = () => {
-//   const { data: sessionData } = useSession();
-
-//   const { data: secretMessage } = api.example.getSecretMessage.useQuery(
-//     undefined, // no input
-//     { enabled: sessionData?.user !== undefined }
-//   );
-
-//   return (
-//     <div className="flex flex-col items-center justify-center gap-4">
-//       <p className="text-center text-2xl text-white">
-//         {sessionData && <span>Logged in as {sessionData.user?.name}</span>}
-//         {secretMessage && <span> - {secretMessage}</span>}
-//       </p>
-//       <button
-//         className="rounded-full bg-white/10 px-10 py-3 font-semibold text-white no-underline transition hover:bg-white/20"
-//         onClick={sessionData ? () => void signOut() : () => void signIn()}
-//       >
-//         {sessionData ? "Sign out" : "Sign in"}
-//       </button>
-//     </div>
-//   );
-// };
+export default CreatePost;
