@@ -11,7 +11,7 @@ const navItems =
 export default function Nav() {
   return (
     <>
-      <nav >
+      <nav className="flex justify-end">
         <ul className="flex p-5 text-white w-1/5 items-end justify-between">
           {navItems.map((item) => (
             <li key={item.name}>

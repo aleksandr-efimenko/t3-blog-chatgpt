@@ -4,21 +4,22 @@ import Link from "next/link";
 import { signIn, signOut, useSession } from "next-auth/react";
 import { api } from "~/utils/api";
 import { useState } from "react";
-import { useRouter } from "next/router";
 
 const CreatePost: NextPage = () => {
-  const router = useRouter();
-  const [title, setTitle] = useState("");
+  const [prompt, setPrompt] = useState("");
   const [content, setContent] = useState("");
+  const response = api.openAi.generateCompletion.useMutation({
+    
+    onSuccess: (data) => {
+      if (!data.response) return;
+      setContent(data.response);
+      console.log(data);
+    },
+  });
 
-  const submitData = (e: React.FormEvent) => {
+  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    const body = { title, content };
-    fetch(`/api/post`, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(body),
-    }).catch((error) => console.error(error));
+    response.mutate({ text: prompt });
   };
 
   return (
@@ -32,14 +33,14 @@ const CreatePost: NextPage = () => {
         <div className="container flex flex-col items-center justify-center gap-12 px-4 py-16 ">
           <h1 className="text-2xl tracking-tight text-white">Create post</h1>
           <div>
-            <form onSubmit={submitData} className="flex flex-col">
+            <form onSubmit={handleSubmit} className="flex flex-col">
               <input
                 className="my-2"
                 autoFocus
-                onChange={(e) => setTitle(e.target.value)}
+                onChange={(e) => setPrompt(e.target.value)}
                 placeholder="Title"
                 type="text"
-                value={title}
+                value={prompt}
               />
               <textarea
                 cols={50}
@@ -50,7 +51,7 @@ const CreatePost: NextPage = () => {
               />
               <input
                 className="my-2 cursor-pointer bg-white/10 px-10 py-3 font-semibold text-white no-underline transition hover:bg-white/20"
-                disabled={!content || !title}
+                disabled={!prompt}
                 type="submit"
                 value="Create"
               />

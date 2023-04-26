@@ -7,20 +7,8 @@ import { useState } from "react";
 import { useRouter } from "next/router";
 
 const Home: NextPage = () => {
-  // const hello = api.example.hello.useQuery({ text: "from tRPC" });
-  const router = useRouter();
-  const [title, setTitle] = useState("");
-  const [content, setContent] = useState("");
-
-  const submitData = (e: React.FormEvent) => {
-    e.preventDefault();
-    const body = { title, content };
-    fetch(`/api/post`, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(body),
-    }).catch((error) => console.error(error));
-  };
+  const hello = api.example.hello.useQuery({ text: "from tRPC" })
+  const models = api.openAi.getOpenAiModels.useQuery(undefined, { enabled: false });
 
   return (
     <>
@@ -31,37 +19,8 @@ const Home: NextPage = () => {
       </Head>
       <main className="flex flex-col items-center justify-center">
         <div className="container flex flex-col items-center justify-center gap-12 px-4 py-16 ">
-          <h1 className="text-2xl tracking-tight text-white">
-            Create post
-          </h1>
-          <div>
-            <form onSubmit={submitData} className="flex flex-col">
-              <input
-              className="my-2"
-                autoFocus
-                onChange={(e) => setTitle(e.target.value)}
-                placeholder="Title"
-                type="text"
-                value={title}
-              />
-              <textarea
-                cols={50}
-                onChange={(e) => setContent(e.target.value)}
-                placeholder="Content"
-                rows={8}
-                value={content}
-              />
-              <input
-              className="my-2 bg-white/10 px-10 py-3 font-semibold text-white no-underline transition hover:bg-white/20 cursor-pointer"
-                disabled={!content || !title}
-                type="submit"
-                value="Create"
-              />
-              {/* <Link className="back" href="#" onClick={() => router.push("/")}>
-                or Cancel
-              </Link> */}
-            </form>
-          </div>
+
+
         </div>
       </main>
     </>
