@@ -71,6 +71,7 @@ model Post {
     title     String  @db.Text
     content   String? @db.Text
     published Boolean @default(false)
+    createdAt DateTime @default(now())
     author    User?   @relation(fields: [authorId], references: [id])
     authorId  String?
 }
