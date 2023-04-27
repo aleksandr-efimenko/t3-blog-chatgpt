@@ -16,7 +16,9 @@ export const postsRouter = createTRPCRouter({
       };
     }),
 
-  getPostById: publicProcedure.query(({ ctx, input } )  => {
+  getPostById: publicProcedure
+  .input(z.object({ id: z.string() }))
+  .query(({ ctx, input } )  => {
     return ctx.prisma.post.findUnique({
       where: {
         id: input.id,
@@ -24,7 +26,8 @@ export const postsRouter = createTRPCRouter({
     });
   }),
 
-  getAllPosts: publicProcedure.query(({ ctx }): Post[] => {
+  getAllPosts: publicProcedure
+  .query(({ ctx }) => {
     return ctx.prisma.post.findMany();
   }),
 
