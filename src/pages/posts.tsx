@@ -2,6 +2,10 @@ import React from "react";
 import Link from "next/link";
 import { api } from "~/utils/api";
 import type { Post } from "@prisma/client";
+import AnimatedSpinner from "~/components/AnimatedSpinner";
+import Button from "~/components/Button";
+import PostElement from "~/components/PostElement";
+import PostButtonsBar from "~/components/PostButtonsBar";
 
 export default function Posts() {
   const { data, error } = api.posts.getAllPosts.useQuery();
@@ -11,21 +15,18 @@ export default function Posts() {
 
   if (!data) {
     return (
-      <div className="flex flex-col gap-8 text-white">
-        <p>Loading...</p>
+      <div className="flex flex-col items-center justify-center gap-8 text-white">
+        <AnimatedSpinner />
       </div>
     );
   }
 
-  console.log(data);
   return (
-    <div className="flex flex-col gap-8 text-white">
+    <div className="flex flex-col items-center justify-center gap-8 p-8">
       {data.map((post: Post) => (
-        <div key={post.id}>
-          <Link href={`/posts/${post.id}`}>
-            <h2 className="text-3xl ">{post.title}</h2>
-          </Link>
-          <p>{post.content}</p>
+        <div key={post.id} className=" border  border-x-gray-200 p-4 w-full">
+          <PostElement key={post.id} post={post} />
+          <PostButtonsBar postId={post.id} />
         </div>
       ))}
     </div>

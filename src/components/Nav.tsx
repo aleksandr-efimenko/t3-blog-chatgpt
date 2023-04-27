@@ -12,9 +12,9 @@ export default function Nav() {
   return (
     <>
       <nav className="flex justify-end">
-        <ul className="flex p-5 text-white w-1/5 items-end justify-between">
+        <ul className="flex p-5 text-white items-end justify-between">
           {navItems.map((item) => (
-            <li key={item.name}>
+            <li className="mx-5" key={item.name}>
               <Link href={item.path}>{item.name}</Link>
             </li>
           ))}

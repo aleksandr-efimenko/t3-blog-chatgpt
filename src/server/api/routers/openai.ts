@@ -25,7 +25,7 @@ export const openAiRouter = createTRPCRouter({
   }),
   generateCompletion: publicProcedure
     .input(z.object({ text: z.string() }))
-    .mutation(async ({ ctx, input }) => {
+    .mutation(async ({ input }) => {
       const response = await openai
         .createCompletion({
           model: "text-davinci-003",
@@ -34,48 +34,12 @@ export const openAiRouter = createTRPCRouter({
           temperature: 0.7,
         })
         .then((response) => {
-          console.log(response);
-
+          // console.log(response);
           return {
-            response: response?.data?.choices?.[0]?.text || "No response",
+            response: response?.data
           };
         });
-
-      // generate query to save to db with prisma
-      const query = await ctx.prisma.post.create({
-        data: {
-          title: input.text,
-          content: response.response,
-          published: true,
-        },
-      });
-
       return response;
     }),
 
-  hello: publicProcedure
-    .input(z.object({ text: z.string() }))
-    .query(({ input }) => {
-      return {
-        greeting: `Hello ${input.text}`,
-      };
-    }),
-
-  getAll: publicProcedure.query(({ ctx }) => {
-    return ctx.prisma.post.findMany();
-  }),
-
-  createPost: publicProcedure.mutation(async ({ ctx, input }) => {
-     await ctx.prisma.post.create({
-      data: {
-        title: input.title,
-        content: input.content,
-        published: input.published,
-      },
-    });
-  }),
-
-  getSecretMessage: protectedProcedure.query(() => {
-    return "you can now see this secret message!";
-  }),
 });

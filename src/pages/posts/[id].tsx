@@ -1,4 +1,6 @@
 import { useRouter } from "next/router";
+import AnimatedSpinner from "~/components/AnimatedSpinner";
+import PostElement from "~/components/PostElement";
 import { api } from "~/utils/api";
 
 const Post = () => {
@@ -6,10 +8,15 @@ const Post = () => {
 
   const { data: post } = api.posts.getPostById.useQuery({ id: id as string });
 
+  if (!post)
+    return (
+      <div className="flex flex-col items-center justify-center gap-8 p-8">
+        <AnimatedSpinner />;
+      </div>
+    );
   return (
-    <div className="flex flex-col items-center justify-center  text-white">
-      <h2 className="text-3xl">{post?.title}</h2>
-      <p>{post?.content}</p>
+    <div className="flex flex-col items-center justify-center gap-8 p-8">
+      <PostElement post={post} />
     </div>
   );
 };
