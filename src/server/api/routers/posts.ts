@@ -8,14 +8,6 @@ import {
 } from "~/server/api/trpc";
 
 export const postsRouter = createTRPCRouter({
-  hello: publicProcedure
-    .input(z.object({ text: z.string() }))
-    .query(({ input }) => {
-      return {
-        greeting: `Hello ${input.text}`,
-      };
-    }),
-
   getPostById: publicProcedure
   .input(z.object({ id: z.string() }))
   .query(({ ctx, input } )  => {
@@ -28,10 +20,38 @@ export const postsRouter = createTRPCRouter({
 
   getAllPosts: publicProcedure
   .query(({ ctx }) => {
-    return ctx.prisma.post.findMany();
+    return ctx.prisma.post.findMany({
+      orderBy: {
+        createdAt: "desc",
+      },
+    });
   }),
 
-  getSecretMessage: protectedProcedure.query(() => {
-    return "you can now see this secret message!";
+  deletePost: publicProcedure
+  .input(z.object({ id: z.string() }))
+  .mutation(({ ctx, input }) => {
+    return ctx.prisma.post.delete({
+      where: {
+        id: input.id,
+      },
+    });
   }),
+  
+
+  createPost: publicProcedure
+  .input(z.object({
+    title: z.string(),
+    content: z.string(),
+    published: z.boolean(),
+  }))
+  .mutation (({ ctx, input }) => {
+     return ctx.prisma.post.create({
+     data: {
+       title: input.title,
+       content: input.content,
+       published: input.published,
+     },
+   });
+ }),
+
 });
