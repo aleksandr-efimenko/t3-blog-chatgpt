@@ -1,5 +1,5 @@
 import { z } from "zod";
-
+import OpenAiSettings from "~/components/OpenAiSettings";
 import { Configuration, OpenAIApi } from "openai";
 const configuration = new Configuration({
   organization: process.env.OPENAI_ORG,
@@ -23,14 +23,20 @@ export const openAiRouter = createTRPCRouter({
     return response;
   }),
   generateCompletion: publicProcedure
-    .input(z.object({ text: z.string() }))
+  
+    .input(z.object( { 
+      model: z.string(),
+      prompt: z.string(),
+      max_tokens: z.number(),
+      temperature: z.number(),
+     }) )
     .mutation(async ({ input }) => {
       const response = await openai
         .createCompletion({
-          model: "text-davinci-003",
-          prompt: input.text,
-          max_tokens: 2000,
-          temperature: 0.7,
+          model: input.model,
+          prompt: input.prompt,
+          max_tokens: input.max_tokens,
+          temperature: input.temperature,
         })
         .then((response) => {
           // console.log(response);
