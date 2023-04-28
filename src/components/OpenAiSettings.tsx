@@ -1,4 +1,6 @@
 import React, { useState } from "react";
+import { api } from "~/utils/api";
+import AnimatedSpinner from "./AnimatedSpinner";
 
 export type OpenAiSettingsProps = {
   model: string;
@@ -8,24 +10,6 @@ export type OpenAiSettingsProps = {
   keywords: string[];
 };
 
-const models = [
-  "davinci",
-  "curie",
-  "babbage",
-  "ada",
-  "cushman",
-  "davinci-instruct-beta",
-  "content-filter-alpha",
-  "davinci-codex",
-  "curie-instruct-beta",
-  "davinci-codex-beta",
-  "curie-codex",
-  "curie-codex-beta",
-  "davinci-codex-closed-beta",
-  "curie-codex-closed-beta",
-  "lumin",
-];
-
 export default function OpenAiSettings() {
   const [settings, setSettings] = useState<OpenAiSettingsProps>({
     prompt: "",
@@ -34,6 +18,20 @@ export default function OpenAiSettings() {
     temperature: 0.8,
     max_tokens: 200,
   });
+
+  const { data, error } = api.openAi.getOpenAiModels.useQuery();
+  if (error) {
+    return <div>Error while fetching models from openAi: {error.message}</div>;
+  }
+
+  if (!data) {
+    return (
+      <div className="flex flex-col items-center justify-center gap-8 text-white">
+        <AnimatedSpinner />
+      </div>
+    );
+  }
+  console.log(data);
 
   return (
     <div>
@@ -48,15 +46,30 @@ export default function OpenAiSettings() {
       <div className="">
         <label htmlFor="model">Model</label>
         <select name="model" id="model">
-          {models.map((model) => (
-            <option key={model} value={model}>{model}</option>
+          {data.data.map((model) => (
+            <option key={model.id} value={model.id}>
+              {model.id}
+            </option>
           ))}
         </select>
       </div>
 
       <div className="">
         <label htmlFor="temperature">Temperature</label>
-        <input type="range" min="0" max="2" step="0.1" id="temperature" />
+        <input
+          type="range"
+          min="0"
+          max="2"
+          step="0.1"
+          id="temperature"
+          value={settings.temperature}
+          onChange={(e) =>
+            setSettings((prev) => ({
+              ...prev,
+              temperature: parseFloat(e.target.value),
+            }))
+          }
+        />
       </div>
     </div>
   );
