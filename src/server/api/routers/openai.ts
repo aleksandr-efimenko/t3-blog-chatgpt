@@ -17,11 +17,10 @@ export const openAiRouter = createTRPCRouter({
   getOpenAiModels: publicProcedure.query(async () => {
     const response = await openai.listModels().then((response) => {
       console.log(response);
-      return response;
+      return response?.data;
     });
 
-    console.log(response);
-    return "response";
+    return response;
   }),
   generateCompletion: publicProcedure
     .input(z.object({ text: z.string() }))
@@ -36,10 +35,9 @@ export const openAiRouter = createTRPCRouter({
         .then((response) => {
           // console.log(response);
           return {
-            response: response?.data
+            response: response?.data,
           };
         });
       return response;
     }),
-
 });
