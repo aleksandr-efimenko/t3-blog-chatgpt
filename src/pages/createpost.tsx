@@ -1,11 +1,9 @@
 import { type NextPage } from "next";
 import Head from "next/head";
-import Link from "next/link";
 import { signIn, signOut, useSession } from "next-auth/react";
 import { api } from "~/utils/api";
-import { useCallback, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import Button from "~/components/Button";
-import { Router } from "next/router";
 import PostElement from "~/components/PostElement";
 import "easymde/dist/easymde.min.css";
 import OpenAiSettings, {
@@ -41,7 +39,9 @@ const CreatePost: NextPage = () => {
     onSuccess: (data) => {
       console.log("success");
       if (!data.response) return;
-      const text = data.response?.choices?.[0]?.text || "No response";
+      let text = data.response?.choices?.[0]?.text || "No response";
+      //remove leading blank lines
+      text = text.replace(/^\s*\n/gm, "");
       console.log(data.response);
       setContent(text);
       setOpenAIFetchingStatus("fulfilled");
@@ -50,23 +50,23 @@ const CreatePost: NextPage = () => {
 
   const generatePost = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    if(!title) return;
+    if (!title) return;
     if (openAIFetchingStatus === "pending") return;
     setContent("");
-
     await response.mutateAsync({ ...settings, prompt: settings.finalPrompt });
   };
 
+  //Generate final prompt
   useEffect(() => {
-    let finalPrompt = `${settings.prompt} ${title}`;
+    let finalPrompt = `${settings.prompt} "${title}".`;
     if (settings.description) {
       finalPrompt += `\n\n${settings.description}`;
     }
     if (settings.keywords.length > 0) {
-      finalPrompt += `\n\nUse keywords: ${settings.keywords.join(", ")}`;
+      finalPrompt += `\n\nUse keywords: "${ settings.keywords.join( ", " )}"`;
     }
     if (settings.format) {
-      finalPrompt += `\n\nUse format: ${settings.format}`;
+      finalPrompt += `\n\nUse format: "${settings.format}"`;
     }
 
     setSettings((prev) => ({ ...prev, finalPrompt }));
@@ -77,7 +77,6 @@ const CreatePost: NextPage = () => {
     settings.format,
     title,
   ]);
-
 
   const publishPost = api.posts.createPost.useMutation();
   const savePost = () => {
@@ -99,13 +98,13 @@ const CreatePost: NextPage = () => {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <main className="flex min-h-full flex-col items-center justify-center">
-        <div className="container flex flex-col items-center justify-center gap-3  ">
+        <div className="w-11/12 flex flex-col items-center justify-center gap-3  ">
           <h1 className="text-2xl tracking-tight text-white">Create post</h1>
-          <div className=" grid w-full grid-cols-3 gap-10">
+          <div className=" grid w-full lg:grid-cols-3 gap-10  grid-flow-row">
             <div className="">
               <OpenAiSettings settings={settings} setSettings={setSettings} />
             </div>
-            
+
             <ArticleGenForm
               title={title}
               setTitle={setTitle}
@@ -120,8 +119,8 @@ const CreatePost: NextPage = () => {
             </div>
           </div>
           <div className="text-left">
-            <h2 className="text-white text-2xl mt-5">Final prompt:</h2>
-                <p className="text-white">{settings.finalPrompt}</p>
+            <h2 className="mt-5 text-2xl text-white">Final prompt:</h2>
+            <p className="text-white">{settings.finalPrompt}</p>
           </div>
         </div>
       </main>

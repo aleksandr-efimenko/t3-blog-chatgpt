@@ -81,7 +81,12 @@ export default function OpenAiSettings({
           id="keywords"
           className="rounded-input"
           value={settings.keywords}
-          onChange={updateSettings("keywords")}
+          onChange={(e) => {
+            setSettings((prev: OpenAiSettingsProps) => ({
+              ...prev,
+              keywords: e.target.value.split(","),
+            }));
+          }}
         />
       </div>
       <div className="">
