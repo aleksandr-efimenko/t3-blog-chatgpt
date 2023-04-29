@@ -67,11 +67,41 @@ model VerificationToken {
 }
 
 model Post {
-    id        String  @id @default(cuid())
-    title     String  @db.Text
-    content   String? @db.Text
-    published Boolean @default(false)
+    id        String   @id @default(cuid())
+    title     String   @db.Text
+    slug      String?   @unique 
+    excerpt   String?  @db.Text
+    content   String?  @db.Text
+    published Boolean  @default(false)
     createdAt DateTime @default(now())
-    author    User?   @relation(fields: [authorId], references: [id])
+    author    User?    @relation(fields: [authorId], references: [id])
     authorId  String?
+    mainImage Image?  @relation(fields: [mainImageId], references: [id])
+    mainImageId String?
+    categories Category[]
+    updatedAt DateTime? @updatedAt
+}
+
+model Image {
+    id          String   @id @default(cuid())
+    createdAt   DateTime @default(now())
+    updatedAt   DateTime @updatedAt
+    url         String   @db.Text
+    name        String?  @db.Text
+    blurDataUrl String?  @db.Text
+    altText     String?  @db.Text
+    width       Int?
+    height      Int?
+    posts       Post[]
+}
+
+model Category {
+    id        String   @id @default(cuid())
+    title     String   @db.Text
+    slug      String   @unique
+    color     String?  @db.Text
+    createdAt DateTime @default(now())
+    updatedAt DateTime @updatedAt
+    name      String   @unique
+    posts     Post[]
 }
