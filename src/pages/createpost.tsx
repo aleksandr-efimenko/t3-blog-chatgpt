@@ -14,13 +14,14 @@ import ArticleGenForm from "~/components/ArticleGenForm";
 const CreatePost: NextPage = () => {
   const [settings, setSettings] = useState<OpenAiSettingsProps>({
     prompt: "Write a blog post with the following title:",
-    description: "",
+    description: "Don't include the title in the post. Make keywords bold.",
     keywords: [],
-    model: "text-davinci-001",
+    model: "text-davinci-003",
     temperature: 0.8,
     max_tokens: 200,
-    format: "",
+    format: "markdown",
     finalPrompt: "",
+    useMaximumTokens: false,
   });
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
@@ -63,10 +64,13 @@ const CreatePost: NextPage = () => {
       finalPrompt += `\n\n${settings.description}`;
     }
     if (settings.keywords.length > 0) {
-      finalPrompt += `\n\nUse keywords: "${ settings.keywords.join( ", " )}"`;
+      finalPrompt += `\n\nUse keywords: "${settings.keywords.join(", ")}"`;
     }
     if (settings.format) {
       finalPrompt += `\n\nUse format: "${settings.format}"`;
+    }
+    if (settings.useMaximumTokens) {
+      finalPrompt += `\n\nUse maximum tokens`;
     }
 
     setSettings((prev) => ({ ...prev, finalPrompt }));
@@ -75,6 +79,7 @@ const CreatePost: NextPage = () => {
     settings.description,
     settings.keywords,
     settings.format,
+    settings.useMaximumTokens,
     title,
   ]);
 
@@ -98,9 +103,9 @@ const CreatePost: NextPage = () => {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <main className="flex min-h-full flex-col items-center justify-center">
-        <div className="w-11/12 flex flex-col items-center justify-center gap-3  ">
+        <div className="flex w-11/12 flex-col items-center justify-center gap-3  ">
           <h1 className="text-2xl tracking-tight text-white">Create post</h1>
-          <div className=" grid w-full lg:grid-cols-3 gap-10  grid-flow-row">
+          <div className=" grid w-full grid-flow-row gap-10  lg:grid-cols-3">
             <div className="">
               <OpenAiSettings settings={settings} setSettings={setSettings} />
             </div>
@@ -113,13 +118,14 @@ const CreatePost: NextPage = () => {
               generatePost={generatePost}
               openAIFetchingStatus={openAIFetchingStatus}
             />
-            <div className="flex w-full flex-1 flex-col justify-between">
+            <div className="flex w-full flex-1 flex-col justify-between bg-opacity-50 bg-slate-500 p-4">
+              <h2 className="text-2xl text-white">Resulted post:</h2>
               <PostElement post={{ title: title, content: content }} />
-              <Button onClick={savePost}>Post</Button>
+              <Button onClick={savePost}>Save Post</Button>
             </div>
           </div>
-          <div className="text-left">
-            <h2 className="mt-5 text-2xl text-white">Final prompt:</h2>
+          <div className="text-left bg-opacity-50 bg-slate-500 p-4 w-full mb-10">
+            <h2 className="text-2xl text-white">Final prompt:</h2>
             <p className="text-white">{settings.finalPrompt}</p>
           </div>
         </div>

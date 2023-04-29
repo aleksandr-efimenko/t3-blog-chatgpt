@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { api } from "~/utils/api";
-import AnimatedSpinner from "./AnimatedSpinner";
+
 
 export type OpenAiSettingsProps = {
   prompt: string;
@@ -10,6 +9,7 @@ export type OpenAiSettingsProps = {
   max_tokens: number;
   keywords: string[];
   format: "" | "markdown" | "html" | "text" | "json";
+  useMaximumTokens: boolean;
   finalPrompt: string;
 };
 
@@ -157,6 +157,17 @@ export default function OpenAiSettings({
           <option value="text">Text</option>
           <option value="json">JSON</option>
         </select>
+      </div>
+
+      <div className="">
+        <input  className="" type="checkbox" id="useMaximumTokens" checked={settings.useMaximumTokens} 
+        onChange={(e) =>
+          setSettings((prev: OpenAiSettingsProps) => ({
+            ...prev,
+            useMaximumTokens: e.target.checked,
+          }))
+        } />
+        <label className="ml-5" htmlFor="useMaximumTokens">Use maximum provided tokens</label>
       </div>
     </div>
   );

@@ -9,18 +9,17 @@ import {
 
 export const postsRouter = createTRPCRouter({
   getPostById: publicProcedure
-  .input(z.object({ id: z.string() }))
-  .query(({ ctx, input } )  => {
-    return ctx.prisma.post.findUnique({
-      where: {
-        id: input.id,
-      },
-    });
-  }),
+    .input(z.object({ id: z.string() }))
+    .query(({ ctx, input }) => {
+      return ctx.prisma.post.findUnique({
+        where: {
+          id: input.id,
+        },
+      });
+    }),
 
-  getAllPosts: publicProcedure
-  .query(({ ctx }) => {
-    return ctx.prisma.post.findMany({
+  getAllPosts: publicProcedure.query(async ({ ctx }) => {
+    return await ctx.prisma.post.findMany({
       orderBy: {
         createdAt: "desc",
       },
@@ -28,30 +27,30 @@ export const postsRouter = createTRPCRouter({
   }),
 
   deletePost: publicProcedure
-  .input(z.object({ id: z.string() }))
-  .mutation(({ ctx, input }) => {
-    return ctx.prisma.post.delete({
-      where: {
-        id: input.id,
-      },
-    });
-  }),
-  
+    .input(z.object({ id: z.string() }))
+    .mutation(({ ctx, input }) => {
+      return ctx.prisma.post.delete({
+        where: {
+          id: input.id,
+        },
+      });
+    }),
 
   createPost: publicProcedure
-  .input(z.object({
-    title: z.string(),
-    content: z.string(),
-    published: z.boolean(),
-  }))
-  .mutation (({ ctx, input }) => {
-     return ctx.prisma.post.create({
-     data: {
-       title: input.title,
-       content: input.content,
-       published: input.published,
-     },
-   });
- }),
-
+    .input(
+      z.object({
+        title: z.string(),
+        content: z.string(),
+        published: z.boolean(),
+      })
+    )
+    .mutation(({ ctx, input }) => {
+      return ctx.prisma.post.create({
+        data: {
+          title: input.title,
+          content: input.content,
+          published: input.published,
+        },
+      });
+    }),
 });
