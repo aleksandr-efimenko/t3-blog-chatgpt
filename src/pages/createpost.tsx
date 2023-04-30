@@ -6,9 +6,7 @@ import { useEffect, useState } from "react";
 import Button from "~/components/Button";
 import PostElement from "~/components/PostElement";
 import "easymde/dist/easymde.min.css";
-import OpenAiSettings, {
-  OpenAiSettingsProps,
-} from "~/components/OpenAiSettings";
+import OpenAiSettings, { type OpenAiSettingsProps } from "~/components/OpenAiSettings";
 import ArticleGenForm from "~/components/ArticleGenForm";
 
 const CreatePost: NextPage = () => {
@@ -40,6 +38,7 @@ const CreatePost: NextPage = () => {
     },
     onSuccess: (data) => {
       console.log("success");
+      if (!data) return;
       if (!data.response) return;
       let text = data.response?.choices?.[0]?.text || "No response";
       //remove leading blank lines

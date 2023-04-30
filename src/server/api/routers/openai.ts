@@ -30,7 +30,9 @@ export const openAiRouter = createTRPCRouter({
       temperature: z.number(),
      }) )
     .mutation(async ({ input }) => {
-      const response = await openai
+
+      try {
+        const response = await openai
         .createCompletion({
           model: input.model,
           prompt: input.prompt,
@@ -44,6 +46,10 @@ export const openAiRouter = createTRPCRouter({
           };
         });
       return response;
+      }
+      catch (error) {
+        console.log(error);
+      }
     }),
     generateImage: publicProcedure.
     input(z.object( {
