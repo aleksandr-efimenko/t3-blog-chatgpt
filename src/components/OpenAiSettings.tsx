@@ -1,3 +1,12 @@
+import { api } from "~/utils/api";
+
+// export const revalidate = 1
+function getModels() {
+  const { data } = api.openAi.getOpenAiModels.useQuery();
+  const models = data?.data?.map((model) => model.id);
+  return models;
+}
+
 export type OpenAiSettingsProps = {
   prompt: string;
   description: string;
@@ -17,20 +26,6 @@ export default function OpenAiSettings({
   settings: OpenAiSettingsProps;
   setSettings: React.Dispatch<React.SetStateAction<OpenAiSettingsProps>>;
 }) {
-  //   const { data, error } = api.openAi.getOpenAiModels.useQuery();
-  //   if (error) {
-  //     return <div>Error while fetching models from openAi: {error.message}</div>;
-  //   }
-
-  //   if (!data) {
-  //     return (
-  //       <div className="flex flex-col items-center justify-center gap-8 text-white">
-  //         <AnimatedSpinner />
-  //       </div>
-  //     );
-  //   }
-  //   console.log(data);
-
   //helper function to update settings
   const updateSettings = (key: string) => {
     return function (
@@ -44,8 +39,7 @@ export default function OpenAiSettings({
       }));
     };
   };
-  const models = ["text-davinci-001", "text-davinci-003"];
-
+  const models = getModels();
   return (
     <div className="w-full text-white">
       <div className="">
@@ -95,11 +89,11 @@ export default function OpenAiSettings({
           className="rounded-input"
           onChange={updateSettings("model")}
         >
-          {models.map((model) => (
+          {models ? models.map((model) => (
             <option key={model} value={model}>
               {model}
             </option>
-          ))}
+          )) : null}
         </select>
       </div>
 
