@@ -1,6 +1,3 @@
-import React, { useEffect, useState } from "react";
-
-
 export type OpenAiSettingsProps = {
   prompt: string;
   description: string;
@@ -18,7 +15,7 @@ export default function OpenAiSettings({
   setSettings,
 }: {
   settings: OpenAiSettingsProps;
-  setSettings: (settings: OpenAiSettingsProps) => void;
+  setSettings: React.Dispatch<React.SetStateAction<OpenAiSettingsProps>>;
 }) {
   //   const { data, error } = api.openAi.getOpenAiModels.useQuery();
   //   if (error) {
@@ -117,8 +114,8 @@ export default function OpenAiSettings({
           id="temperature"
           value={settings.temperature}
           onChange={(e) => {
-            setSettings((prev: OpenAiSettingsProps) => ({
-              ...prev,
+            setSettings((previousSettings: OpenAiSettingsProps) => ({
+              ...previousSettings,
               temperature: parseFloat(e.target.value),
             }));
           }}
@@ -160,14 +157,21 @@ export default function OpenAiSettings({
       </div>
 
       <div className="">
-        <input  className="" type="checkbox" id="useMaximumTokens" checked={settings.useMaximumTokens} 
-        onChange={(e) =>
-          setSettings((prev: OpenAiSettingsProps) => ({
-            ...prev,
-            useMaximumTokens: e.target.checked,
-          }))
-        } />
-        <label className="ml-5" htmlFor="useMaximumTokens">Use maximum provided tokens</label>
+        <input
+          className=""
+          type="checkbox"
+          id="useMaximumTokens"
+          checked={settings.useMaximumTokens}
+          onChange={(e) =>
+            setSettings((prev: OpenAiSettingsProps) => ({
+              ...prev,
+              useMaximumTokens: e.target.checked,
+            }))
+          }
+        />
+        <label className="ml-5" htmlFor="useMaximumTokens">
+          Use maximum provided tokens
+        </label>
       </div>
     </div>
   );
