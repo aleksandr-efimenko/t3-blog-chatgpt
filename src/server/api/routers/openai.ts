@@ -1,6 +1,5 @@
 import { z } from "zod";
-import OpenAiSettings from "~/components/OpenAiSettings";
-import { Configuration, OpenAIApi } from "openai";
+import { Configuration, CreateImageRequestSizeEnum, OpenAIApi } from "openai";
 const configuration = new Configuration({
   organization: process.env.OPENAI_ORG,
   apiKey: process.env.OPENAI_API_KEY,
@@ -10,7 +9,6 @@ const openai = new OpenAIApi(configuration);
 import {
   createTRPCRouter,
   publicProcedure,
-  protectedProcedure,
 } from "~/server/api/trpc";
 
 export const openAiRouter = createTRPCRouter({
@@ -47,4 +45,27 @@ export const openAiRouter = createTRPCRouter({
         });
       return response;
     }),
+    generateImage: publicProcedure.
+    input(z.object( {
+      prompt: z.string(),
+      n: z.number(),
+      size: z.nativeEnum(CreateImageRequestSizeEnum)
+    })) 
+    .mutation(async ({ input }) => {
+      const response = await openai
+        .createImage({
+          prompt: input.prompt,
+          n: input.n,
+          size: input.size,
+        })
+        .then((response) => {
+          // console.log(response);
+          return {
+            response: response?.data,
+          };
+        });
+      return response;
+    }
+    ),
 });
+

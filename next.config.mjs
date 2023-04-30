@@ -18,5 +18,9 @@ const config = {
     locales: ["en"],
     defaultLocale: "en",
   },
+  images: {
+    domains: ["windows.net"],
+  },
+
 };
 export default config;
