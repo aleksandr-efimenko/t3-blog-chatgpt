@@ -43,7 +43,7 @@ export default function ArticleGenForm({
 
         <Button
           type="submit"
-          loading={openAIFetchingStatus === "pending"}
+          status={openAIFetchingStatus}
           disabled={!title || openAIFetchingStatus === "pending"}
         >
           {openAIFetchingStatus === "pending" ? "In progress" : "Generate"}

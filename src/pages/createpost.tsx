@@ -43,19 +43,19 @@ const CreatePost: NextPage = () => {
       let text = data.response?.choices?.[0]?.text || "No response";
       //remove leading blank lines
       text = text.replace(/^\s*\n/gm, "");
-      console.log(data.response);
+      // console.log(data.response);
       setContent(text);
       setOpenAIFetchingStatus("fulfilled");
     },
   });
 
-  const generatePost = (e: React.FormEvent<HTMLFormElement>) => async () => {
+  const generatePost = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (!title) return;
     if (openAIFetchingStatus === "pending") return;
     setContent("");
-    await response.mutateAsync({ ...settings, prompt: settings.finalPrompt });
-  };
+    response.mutate({ ...settings, prompt: settings.finalPrompt });
+  }
 
   //Generate final prompt
   useEffect(() => {
@@ -134,7 +134,7 @@ const CreatePost: NextPage = () => {
                   mainImageId: null,
                 }}
               />
-              <Button onClick={savePost}>Save Post</Button>
+              <Button status="idle" onClick={savePost}>Save Post</Button>
             </div>
           </div>
           <div className="mb-10 w-full bg-slate-500 bg-opacity-50 p-4 text-left">

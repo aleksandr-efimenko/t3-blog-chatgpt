@@ -3,7 +3,6 @@ import Link from "next/link";
 import { api } from "~/utils/api";
 import type { Post } from "@prisma/client";
 import AnimatedSpinner from "~/components/AnimatedSpinner";
-import Button from "~/components/Button";
 import PostElement from "~/components/PostElement";
 import PostButtonsBar from "~/components/PostButtonsBar";
 

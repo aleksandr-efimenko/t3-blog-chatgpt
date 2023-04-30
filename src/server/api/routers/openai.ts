@@ -15,8 +15,9 @@ import {
 
 export const openAiRouter = createTRPCRouter({
   getOpenAiModels: publicProcedure.query(async () => {
+    
     const response = await openai.listModels().then((response) => {
-      console.log(response);
+      // console.log("Get openAIModels", response);
       return response?.data;
     });
 
