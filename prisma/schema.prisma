@@ -67,19 +67,19 @@ model VerificationToken {
 }
 
 model Post {
-    id        String   @id @default(cuid())
-    title     String   @db.Text
-    slug      String?   @unique 
-    excerpt   String?  @db.Text
-    content   String?  @db.Text
-    published Boolean  @default(false)
-    createdAt DateTime @default(now())
-    author    User?    @relation(fields: [authorId], references: [id])
-    authorId  String?
-    mainImage Image?  @relation(fields: [mainImageId], references: [id])
+    id          String     @id @default(cuid())
+    title       String     @db.Text
+    slug        String?    @unique
+    excerpt     String?    @db.Text
+    content     String?    @db.Text
+    published   Boolean    @default(false)
+    createdAt   DateTime   @default(now())
+    author      User?      @relation(fields: [authorId], references: [id])
+    authorId    String?
+    mainImage   Image?     @relation(fields: [mainImageId], references: [id])
     mainImageId String?
-    categories Category[]
-    updatedAt DateTime? @updatedAt
+    categories  Category[]
+    updatedAt   DateTime?  @updatedAt
 }
 
 model Image {
@@ -107,5 +107,7 @@ model Category {
 }
 
 model OpenAIModel {
-    
+    id    String @id @default(cuid())
+    name  String @unique
+    owner String
 }
