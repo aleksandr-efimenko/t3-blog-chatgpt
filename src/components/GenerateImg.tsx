@@ -49,8 +49,8 @@ export default function GenerateImg() {
   return (
     <div className="flex w-full flex-col text-white mb-5">
       <h1 className="text-2xl font-bold">Generate Images</h1>
-      <div className="flex w-full gap-5">
-        <form onSubmit={generateImg} className=" w-1/4">
+      <div className="flex w-full gap-5 lg:flex-row flex-col">
+        <form onSubmit={generateImg} className=" lg:w-1/4">
           <input
             type="text"
             className="rounded-input"
@@ -74,7 +74,7 @@ export default function GenerateImg() {
           </select>
           <Button status={imgGenStatus} type="submit">Generate Images</Button>
         </form>
-        <div className="grid grid-cols-3 gap-3 w-3/4">
+        <div className="grid grid-cols-3 gap-3 lg:w-3/4">
           {imgGenStatus === "pending" && <AnimatedSpinner />}
           {images.map((image) => (
             <img
