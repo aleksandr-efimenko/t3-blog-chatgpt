@@ -2,7 +2,6 @@ import React, { useCallback, useState } from "react";
 import { api } from "~/utils/api";
 import Button from "./Button";
 import dynamic from "next/dynamic";
-import { OpenAiSettingsProps } from "./OpenAiSettings";
 
 const SimpleMdeEditor = dynamic(() => import("react-simplemde-editor"), {
   ssr: false,

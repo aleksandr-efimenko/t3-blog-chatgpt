@@ -6,13 +6,15 @@ import { useEffect, useState } from "react";
 import Button from "~/components/Button";
 import PostElement from "~/components/PostElement";
 import "easymde/dist/easymde.min.css";
-import OpenAiSettings, { type OpenAiSettingsProps } from "~/components/OpenAiSettings";
+import OpenAiSettings, {
+  type OpenAiSettingsProps,
+} from "~/components/OpenAiSettings";
 import ArticleGenForm from "~/components/ArticleGenForm";
 
 const CreatePost: NextPage = () => {
   const [settings, setSettings] = useState<OpenAiSettingsProps>({
     prompt: "Write a blog post with the following title:",
-    description: "Don't include the title in the post. Make keywords bold.",
+    description: "Don't include the title in the post",
     keywords: [],
     model: "text-davinci-003",
     temperature: 0.8,
@@ -39,11 +41,11 @@ const CreatePost: NextPage = () => {
     onSuccess: (data) => {
       console.log("success");
       if (!data) return;
-      if (!data.response) return;
-      let text = data.response?.choices?.[0]?.text || "No response";
+
+      let text = data.response || "No response";
+      // console.log(text);
       //remove leading blank lines
       text = text.replace(/^\s*\n/gm, "");
-      // console.log(data.response);
       setContent(text);
       setOpenAIFetchingStatus("fulfilled");
     },
