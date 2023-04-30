@@ -4,18 +4,14 @@ import { useState } from "react";
 import { CreateImageRequestSizeEnum } from "openai";
 import AnimatedSpinner from "./AnimatedSpinner";
 
-export default function GenerateImg({
-    imgPrompt,
-    setImgPrompt,
-}: {
-    imgPrompt: string;
-    setImgPrompt: (prompt: string) => void;
-}) {
+export default function GenerateImg() {
+  const [imgPrompt, setImgPrompt] = useState("");
+
   const [imgGenStatus, setimgGenStatus] = useState<
     "idle" | "pending" | "fulfilled" | "rejected"
   >("idle");
   const [numberOfImages, setNumberOfImages] = useState(1);
-  const [size, setSize] = useState(CreateImageRequestSizeEnum._256x256);
+  const [size, setSize] = useState('256x256');
   const [images, setImages] = useState<(string | undefined)[]>([]);
   const generateImageMutation = api.openAi.generateImage.useMutation({
     onMutate: () => {
@@ -32,7 +28,7 @@ export default function GenerateImg({
       setimgGenStatus("fulfilled");
       const imgUrls = data.response?.data.map((d) => d.url);
       if (!imgUrls) return;
-      setImages((prev) => [...imgUrls, ...prev ]);
+      setImages((prev) => [...imgUrls, ...prev]);
     },
   });
 
@@ -71,9 +67,7 @@ export default function GenerateImg({
           />
           <select
             className="rounded-input"
-            onChange={(e) =>
-              setSize(e.target.value as CreateImageRequestSizeEnum)
-            }
+            onChange={(e) => setSize(e.target.value)}
             value={size}
           >
             {sizes}
@@ -96,3 +90,34 @@ export default function GenerateImg({
     </div>
   );
 }
+
+// const imgPromptSuggestion = api.openAi.generateCompletion.useMutation({
+//     onMutate: () => {
+//       console.log("pending");
+//     },
+//     onError: (error) => {
+//       console.log(error);
+//     },
+//     onSuccess: (data) => {
+//       console.log("success");
+//       if (!data.response) return;
+//       const text = data.response?.choices?.[0]?.text || "No response";
+//       //remove leading blank lines
+//       setImgPrompt(text);
+//     },
+//   });
+
+// useEffect(()=>
+// {
+//   generateImgPrompt();
+// }, [content])
+// const generateImgPrompt = () => {
+//   if (openAIFetchingStatus === "pending") return;
+//   if (!content) return;
+//   console.log(content);
+//   imgPromptSuggestion.mutate({
+//     ...settings,
+//     prompt:
+//       "Generate a short description for image for website for the article: " + content,
+//   });
+// };

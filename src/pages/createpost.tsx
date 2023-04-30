@@ -29,7 +29,6 @@ const CreatePost: NextPage = () => {
   const [openAIFetchingStatus, setOpenAIFetchingStatus] = useState<
     "idle" | "pending" | "fulfilled" | "rejected"
   >("idle");
-  const [imgPrompt, setImgPrompt] = useState("");
 
   const response = api.openAi.generateCompletion.useMutation({
     onMutate: () => {
@@ -52,44 +51,12 @@ const CreatePost: NextPage = () => {
     },
   });
 
-  const imgPromptSuggestion = api.openAi.generateCompletion.useMutation({
-    onMutate: () => {
-      console.log("pending");
-    },
-    onError: (error) => {
-      console.log(error);
-    },
-    onSuccess: (data) => {
-      console.log("success");
-      if (!data.response) return;
-      const text = data.response?.choices?.[0]?.text || "No response";
-      //remove leading blank lines
-      setImgPrompt(text);
-    },
-  });
-
   const generatePost = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (!title) return;
     if (openAIFetchingStatus === "pending") return;
     setContent("");
     response.mutate({ ...settings, prompt: settings.finalPrompt });
-
-  };
-
-  useEffect(()=>
-  {
-    generateImgPrompt();
-  }, [content])
-  const generateImgPrompt = () => {
-    if (openAIFetchingStatus === "pending") return;
-    if (!content) return;
-    console.log(content);
-    imgPromptSuggestion.mutate({
-      ...settings,
-      prompt:
-        "Generate a short description for image for website for the article: " + content,
-    });
   };
 
   //Generate final prompt
@@ -179,7 +146,7 @@ const CreatePost: NextPage = () => {
             <p className="text-white">{settings.finalPrompt}</p>
           </div>
           <div className="flex w-full flex-col items-center justify-center gap-3">
-            <GenerateImg imgPrompt={imgPrompt} setImgPrompt={setImgPrompt} />
+            <GenerateImg />
           </div>
         </div>
       </main>
