@@ -10,7 +10,6 @@ import OpenAiSettings, {
   OpenAiSettingsProps,
 } from "~/components/OpenAiSettings";
 import ArticleGenForm from "~/components/ArticleGenForm";
-import GenerateImg from "~/components/GenerateImg";
 
 const CreatePost: NextPage = () => {
   const [settings, setSettings] = useState<OpenAiSettingsProps>({
@@ -19,8 +18,8 @@ const CreatePost: NextPage = () => {
     keywords: [],
     model: "text-davinci-003",
     temperature: 0.8,
-    max_tokens: 200,
-    format: "markdown",
+    max_tokens: 2000,
+    format: "",
     finalPrompt: "",
     useMaximumTokens: false,
   });
