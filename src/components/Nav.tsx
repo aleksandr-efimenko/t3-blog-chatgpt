@@ -5,7 +5,8 @@ const navItems =
 [
     {name: "Home", path: "/"},
     {name: "Create post", path: "/createpost"},
-    {name: "Posts", path: "/posts"}
+    {name: "Create image", path: "/createimage"},
+    {name: "Posts", path: "/posts"},
 ] 
 
 export default function Nav() {

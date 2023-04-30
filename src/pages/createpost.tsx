@@ -145,9 +145,6 @@ const CreatePost: NextPage = () => {
             <h2 className="text-2xl text-white">Final prompt:</h2>
             <p className="text-white">{settings.finalPrompt}</p>
           </div>
-          <div className="flex w-full flex-col items-center justify-center gap-3">
-            <GenerateImg />
-          </div>
         </div>
       </main>
     </>
