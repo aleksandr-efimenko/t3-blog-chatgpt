@@ -105,3 +105,7 @@ model Category {
     name      String   @unique
     posts     Post[]
 }
+
+model OpenAIModel {
+    
+}
