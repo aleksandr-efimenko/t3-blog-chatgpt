@@ -1,4 +1,4 @@
-import { Model } from "openai";
+import { type Model } from "openai";
 import { useReducer } from "react";
 import AnimatedSpinner from "~/components/AnimatedSpinner";
 import { api } from "~/utils/api";

@@ -32,7 +32,9 @@ export default function PostElement({ post }: { post: Post }) {
             ),
             li: ({ node, ...props }) => <li className="text-base" {...props} />,
           }}
+          /* eslint-disable */
           children={post.content || ""}
+          /* eslint-enable */
         />
       </div>
     </div>

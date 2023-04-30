@@ -7,7 +7,7 @@ import Container from "~/components/Container";
 import PostList from "~/components/PostList";
 import AnimatedSpinner from "~/components/AnimatedSpinner";
 import PostElement from "~/components/PostElement";
-import { Post } from "@prisma/client";
+import { type Post } from "@prisma/client";
 import PostButtonsBar from "~/components/PostButtonsBar";
 
 const Home: NextPage = () => {
