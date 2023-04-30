@@ -102,7 +102,7 @@ export default function PostList({
         </div>
 
         <div className={cx(minimal ? "flex items-center" : "")}>
-          <div>
+          {/* <div>
             <CategoryLabel categories={post.categories} nomargin={minimal} />
             <h2
               className={cx(
@@ -181,7 +181,7 @@ export default function PostList({
                 )}
               </time>
             </div>
-          </div>
+          </div> */}
         </div> 
       </div>
     </>

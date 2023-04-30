@@ -49,7 +49,7 @@ const CreatePost: NextPage = () => {
     },
   });
 
-  const generatePost = async (e: React.FormEvent<HTMLFormElement>) => {
+  const generatePost = (e: React.FormEvent<HTMLFormElement>) => async () => {
     e.preventDefault();
     if (!title) return;
     if (openAIFetchingStatus === "pending") return;
@@ -118,13 +118,26 @@ const CreatePost: NextPage = () => {
               generatePost={generatePost}
               openAIFetchingStatus={openAIFetchingStatus}
             />
-            <div className="flex w-full flex-1 flex-col justify-between bg-opacity-50 bg-slate-500 p-4">
+            <div className="flex w-full flex-1 flex-col justify-between bg-slate-500 bg-opacity-50 p-4">
               <h2 className="text-2xl text-white">Resulted post:</h2>
-              <PostElement post={{ title: title, content: content }} />
+              <PostElement
+                post={{
+                  title: title,
+                  content: content,
+                  id: "",
+                  slug: null,
+                  excerpt: null,
+                  published: false,
+                  createdAt: new Date(),
+                  authorId: null,
+                  updatedAt: new Date(),
+                  mainImageId: null,
+                }}
+              />
               <Button onClick={savePost}>Save Post</Button>
             </div>
           </div>
-          <div className="text-left bg-opacity-50 bg-slate-500 p-4 w-full mb-10">
+          <div className="mb-10 w-full bg-slate-500 bg-opacity-50 p-4 text-left">
             <h2 className="text-2xl text-white">Final prompt:</h2>
             <p className="text-white">{settings.finalPrompt}</p>
           </div>
