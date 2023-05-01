@@ -80,7 +80,7 @@ export default function GenerateImg() {
         <div className="grid grid-cols-1 items-center justify-center gap-3 lg:w-3/4 lg:grid-cols-3">
           {imgGenStatus === "pending" && <AnimatedSpinner />}
           {images.map((image) => (
-            <Link href={image} download target="_blank"> 
+            image && (<Link href={image} download target="_blank"> 
               <img
               className="hover:opacity-80 transition-opacity duration-300"
                 key={image}
@@ -89,7 +89,7 @@ export default function GenerateImg() {
                 width={500}
                 height={500}
               />
-            </Link>
+            </Link>) 
           ))}
         </div>
       </div>
