@@ -3,6 +3,7 @@ import Button from "./Button";
 import { useState } from "react";
 import { CreateImageRequestSizeEnum } from "openai";
 import AnimatedSpinner from "./AnimatedSpinner";
+import Link from "next/link";
 
 export default function GenerateImg() {
   const [imgPrompt, setImgPrompt] = useState("");
@@ -79,13 +80,16 @@ export default function GenerateImg() {
         <div className="grid grid-cols-1 items-center justify-center gap-3 lg:w-3/4 lg:grid-cols-3">
           {imgGenStatus === "pending" && <AnimatedSpinner />}
           {images.map((image) => (
-            <img
-              key={image}
-              src={image}
-              alt="Generated Image"
-              width={500}
-              height={500}
-            />
+            <Link href={image} download target="_blank"> 
+              <img
+              className="hover:opacity-80 transition-opacity duration-300"
+                key={image}
+                src={image}
+                alt="Generated Image"
+                width={500}
+                height={500}
+              />
+            </Link>
           ))}
         </div>
       </div>
