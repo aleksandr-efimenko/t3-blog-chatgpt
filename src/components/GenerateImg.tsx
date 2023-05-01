@@ -11,7 +11,7 @@ export default function GenerateImg() {
     "idle" | "pending" | "fulfilled" | "rejected"
   >("idle");
   const [numberOfImages, setNumberOfImages] = useState(1);
-  const [size, setSize] = useState('256x256');
+  const [size, setSize] = useState("256x256");
   const [images, setImages] = useState<(string | undefined)[]>([]);
   const generateImageMutation = api.openAi.generateImage.useMutation({
     onMutate: () => {
@@ -47,10 +47,10 @@ export default function GenerateImg() {
     </option>
   ));
   return (
-    <div className="flex w-full flex-col text-white mb-5">
+    <div className="mb-5 flex w-full flex-col text-white">
       <h1 className="text-2xl font-bold">Generate Images</h1>
-      <div className="flex w-full gap-5 lg:flex-row flex-col">
-        <form onSubmit={generateImg} className=" lg:w-1/4">
+      <div className="flex w-full flex-col gap-5 lg:flex-row justify-center items-center">
+        <form onSubmit={generateImg} className="w-full lg:w-1/4">
           <input
             type="text"
             className="rounded-input"
@@ -72,9 +72,11 @@ export default function GenerateImg() {
           >
             {sizes}
           </select>
-          <Button status={imgGenStatus} type="submit">Generate Images</Button>
+          <Button status={imgGenStatus} type="submit">
+            Generate Images
+          </Button>
         </form>
-        <div className="grid grid-cols-3 gap-3 lg:w-3/4">
+        <div className="grid grid-cols-1 items-center justify-center gap-3 lg:w-3/4 lg:grid-cols-3">
           {imgGenStatus === "pending" && <AnimatedSpinner />}
           {images.map((image) => (
             <img
