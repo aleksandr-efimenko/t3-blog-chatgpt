@@ -120,7 +120,7 @@ const CreatePost: NextPage = () => {
               generatePost={generatePost}
               openAIFetchingStatus={openAIFetchingStatus}
             />
-            <div className="flex w-full flex-1 flex-col justify-between bg-slate-500 bg-opacity-50 p-4">
+            <div className="flex w-full flex-1 flex-col justify-start gap-5 bg-slate-500 bg-opacity-50 p-4">
               <h2 className="text-2xl text-white">Resulted post:</h2>
               <PostElement
                 post={{
